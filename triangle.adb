@@ -1,4 +1,4 @@
-type Doublet ;
+type Doublet;
 
 type AdDoublet is access Doublet ;
 
