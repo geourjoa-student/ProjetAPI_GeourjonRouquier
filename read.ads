@@ -1,11 +1,8 @@
 with Ada.Text_Io;
+with listeDeDoublet; use listeDeDoublet;
 
 package read is 
 
+	procedure lectureFichier ( liste : in out AdDoublet ; nomFichier : in String  );  
 	
-	
-	procedure lecture_coord  ;
-
-	procedure lecture_sommet( t : out AdDoublet ) ;
-
 end read;
