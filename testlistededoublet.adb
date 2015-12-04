@@ -3,7 +3,8 @@ with listeDeDoublet; use listeDeDoublet;
 with Ada.Integer_text_io;
 with Ada.Text_Io;
 
-procedure testListeDeDoublet is
+procedure testlistededoublet is
+
 	maListeDeTest : AdDoublet;
 	s1,s2,s3,s4,s5 : T_Coord;
 	t1,t2,t3 : T_Triangle;
@@ -31,12 +32,13 @@ begin
 	courant:=maListeDeTest;
 
 	while not (est_vide (courant)) loop
-		Ada.Text_Io.Put("Element n°" & Integer'Image (i) & ", coordonnée de son premier sommet: " & Float'Image (courant.triangle.Coord_1.x));
+		Ada.Text_Io.Put("Element n°" & Integer'Image (i));
+		Put(courant);
 		courant := courant.suc;
-		Ada.Text_Io.skip_line;
+		Ada.Text_Io.new_line;
 		i:=i+1;
 		
 	end loop;
 	
-end testListeDeDoublet;
+end testlistededoublet;
 

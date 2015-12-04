@@ -1,9 +1,9 @@
 # BUILD RULES
-all: main
+all: main testListeDeDoublet
 
 # Les règles pour compiler koch puis les autres fractales sont à rajouter
 
-testListe : 
+testListeDeDoublet :
 	gnatmake testListeDeDoublet.adb 
 
 main : 

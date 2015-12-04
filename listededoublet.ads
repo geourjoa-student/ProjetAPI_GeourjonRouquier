@@ -34,4 +34,6 @@ package listeDeDoublet is
 
 	function est_vide ( liste : in AdDoublet ) return boolean;
 
+	procedure Put ( liste : in AdDoublet );
+
 end listeDeDoublet;

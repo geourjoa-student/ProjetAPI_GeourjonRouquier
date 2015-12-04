@@ -1,3 +1,6 @@
+with Ada.Text_io;
+with Ada.Float_text_io;
+
 package body listeDeDoublet is
 
 	-- Définitions liées au doublet
@@ -36,6 +39,41 @@ package body listeDeDoublet is
 	begin
 		return (liste = null);
 	end est_vide;
+
+	-- Fonctions d'affichage dans la console
+
+	procedure Put_coord ( coord : in T_Coord) is
+	begin
+		Ada.Text_io.Put("( ");
+		Ada.Float_text_io.put(coord.x, exp=>0);
+		Ada.Text_io.Put(" , ");
+		Ada.Float_text_io.put(coord.y, exp=>0);
+		Ada.Text_io.Put(" , ");
+		Ada.Float_text_io.put(coord.z, exp=>0);
+		Ada.Text_io.Put(" )");
+	end Put_coord;
+	
+	
+	procedure Put_triangle ( triangle : in T_Triangle )is
+	begin
+		Ada.Text_io.Put("S1 : ");
+		Put_coord(triangle.Coord_1);
+		Ada.Text_io.Put(", S2 : ");
+		Put_coord(triangle.Coord_2);
+		Ada.Text_io.Put(", S3 : ");
+		Put_coord(triangle.Coord_3);
+		Ada.Text_io.Put(".");
+	end Put_triangle;
+
+
+	procedure Put ( liste : in AdDoublet ) is
+	begin
+		Ada.Text_io.Put_line("Ce doublet représente le triangle: ");
+		Put_triangle(liste.all.Triangle);
+		Ada.Text_io.new_line;
+	end Put;
+
+
 
 
 end listeDeDoublet;
