@@ -23,6 +23,10 @@ package listeDeDoublet is
 		Suc : AdDoublet ; -- pointeur sur un autre Doublet
 	end record;
 
+	--Définitions liées à la manipulation des triangles et coordonnées
+	
+
+	function cle ( triangle : in T_Triangle ) return float;
 
 	function creer_coord ( x : in float; y : in float; z : in float )  return T_Coord; 
 
@@ -35,5 +39,11 @@ package listeDeDoublet is
 	function est_vide ( liste : in AdDoublet ) return boolean;
 
 	procedure Put ( liste : in AdDoublet );
+
+	procedure insertion_trie ( l: in out AdDoublet ; element : in out AdDoublet) ;		
+
+
+	procedure tri_insertion ( lat : in out AdDoublet ) ;
+
 
 end listeDeDoublet;
