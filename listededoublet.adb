@@ -20,6 +20,24 @@ package body listeDeDoublet is
 		return minFloat(triangle.Coord_1.Z , minFloat ( triangle.Coord_2.Z, triangle.Coord_3.Z));
 	end cle;
 
+	function maxFloat ( a : in float ; b : in float ) return float is
+	begin
+		if (a > b) then
+			return a;
+		else 
+			return b;
+		end if;
+	end maxFloat;
+
+
+	function maxcZ ( triangle : in T_Triangle ) return float is	
+	begin
+		return maxFloat(triangle.Coord_1.Z , maxFloat ( triangle.Coord_2.Z, triangle.Coord_3.Z));
+	end maxcZ;
+
+
+
+
 
 
 
@@ -64,39 +82,51 @@ package body listeDeDoublet is
 		prec : AdDoublet;
 		courant : AdDoublet;
 	begin
-		Ada.Text_io.Put("Insertion");
+		Ada.Text_io.Put_line("Insertion triee :");
 		if est_vide (l) then
+			Ada.Text_io.Put_line("Insertion dans une liste vide");
 			l:=element;
 			element.suc := null;
 		else
+			Ada.Text_io.Put_line("Insertion dans une liste non vide");
 
-
-			prec := null;
+			prec := l;
 			courant:= l;
-			Ada.Text_io.put("Debug1");
-		
+
 			if (courant /= null) then
-				Ada.Text_io.put("Debug6");
+				Ada.Text_io.put_line("Courant /= null");
 				if ( cle(courant.triangle)) < (cle(element.triangle)) then
-					Ada.Text_io.put("Debug5");
+					Ada.Text_io.put(Float'image(cle(courant.triangle)) &  "<" & Float'image(cle(element.triangle)) );
+				else
+					Ada.Text_io.Put_line(Float'image(cle(courant.triangle)) &  ">" & Float'image(cle(element.triangle)) );
 				end if;
+			else
+
+				Ada.Text_io.Put_line("Courant = null");
 			end if;
 
 
 
 			while (courant /= null)  and then ( cle(courant.triangle)) < (cle(element.triangle)) loop
-				Ada.Text_io.put("Debug3");
+				Ada.Text_io.put_line("Je rentre dans la boucle");
 				prec := courant;
 				courant := courant.suc;
-				Ada.Text_io.put("Debug2");
 			end loop;
 
-			Ada.Text_io.put("Debug4");
-			
-			prec.all.suc:=element;
-			element.suc:= courant;
+			Ada.Text_io.put_line("Je suis sortie de la boucle");
+
+			if (courant = null ) then 
+
+				prec.suc:=element;
+				element.suc:= null; 
+			else
+				element.suc:=prec.suc;
+				prec.suc:=element;
+
+			end if;
 		end if;
 
+		Ada.Text_io.new_line;
 
 
 	end insertion_trie;
@@ -118,6 +148,111 @@ package body listeDeDoublet is
 		lat := lt;
 
 	end tri_insertion;
+
+
+
+	type T_tab_liste is array (integer range <>) of AdDoublet;
+
+	-- La liste ne doit pas être vide
+	procedure info_liste ( l: in AdDoublet ; minZ : out float; maxZ : out float) is
+		courant : AdDoublet;	
+	begin
+		courant := l;
+		minZ:=cle(courant.triangle);
+		maxZ:=maxcZ(courant.triangle);
+		courant:=courant.suc;
+		while courant /= null loop
+			if minZ > cle(courant.triangle) then
+				minZ := cle(courant.triangle);
+			end if;
+			if maxZ < maxcZ(courant.triangle) then
+				maxZ := maxcZ (courant.triangle);
+			end if;
+			courant:=courant.suc;
+		end loop;
+	end info_liste;
+
+
+	function hash ( n, a, b, c: in float) return integer is
+	begin
+		return  Integer ( n * (c-a)/(b-a));
+	end hash;
+
+
+
+	function concat ( l1 : in out AdDoublet; l2 : in out AdDoublet) return AdDoublet is
+		courant : AdDoublet;
+	begin
+		if l1 = null then
+			return l2;
+		end if;
+		
+		if l2 = null then
+			return l1;
+		end if;
+		
+		courant := l1;
+		
+		while courant.suc /= null loop
+			courant := courant.suc;
+		end loop;
+	
+		courant.suc:=l2;
+		
+		return l1;
+
+	end concat;
+
+	procedure ajout_en_tete ( l : in out AdDoublet ; e : in AdDoublet ) is
+	begin
+		if l = null then
+			l:=e;
+			e.suc:=null;
+		else
+			e.suc:=l;
+			l:=e;
+		end if;
+	end ajout_en_tete;
+
+
+
+	procedure tri_paquet ( l : in out AdDoublet ; NbCoord : in integer) is
+	begin
+		if l /= null then
+			declare
+				tab : T_tab_liste (0..NbCoord);
+				courant, element : AdDoublet;
+				a,b : float;
+				k : integer; --hash d'un triangle -> indice de l position dans le tableau 
+			begin
+				info_liste (l, a, b);
+				
+				Ada.Text_io.put_line("a: " & Float'Image(a) & ", b:" & Float'Image(b));
+				
+				for i in 0..NbCoord loop
+					tab(i):=null;
+				end loop;
+
+				courant :=l;
+
+				while (courant /= null ) loop
+					element:=courant;
+					courant:=courant.suc;
+					k:=hash(Float(NbCoord), a, b, cle(element.triangle));
+					Ada.Text_io.put(Integer'Image(k));	
+					ajout_en_tete(tab(k), element); 
+				end loop;
+
+				l:=null;
+
+				for i in 0..NbCoord loop
+					l:=concat(l, tab(i));
+				end loop;
+			end;
+		end if;
+
+	end tri_paquet;
+
 
 
 
@@ -156,9 +291,26 @@ package body listeDeDoublet is
 		Ada.Text_io.Put_line("Ce doublet représente le triangle: ");
 		Put_triangle(liste.all.Triangle);
 		Ada.Text_io.new_line;
+		Ada.Text_io.Put("la clé de ce doublet est : " & Float'Image (cle (liste.triangle)));
+		Ada.Text_io.new_line;
 	end Put;
 
+	procedure Put_liste (liste : in AdDoublet ) is
+		courant  : AdDoublet;
+		i : integer :=0;
+	begin
 
+		courant:=liste;
 
+		while not (est_vide (courant)) loop
+			Ada.Text_Io.Put_line("Element n°" & Integer'Image (i) & ":");
+			Put(courant);
+			courant := courant.suc;
+			Ada.Text_Io.new_line;
+			i:=i+1;
+
+		end loop;
+
+	end Put_liste;
 
 end listeDeDoublet;

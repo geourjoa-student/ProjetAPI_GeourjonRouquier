@@ -38,12 +38,8 @@ package listeDeDoublet is
 
 	function est_vide ( liste : in AdDoublet ) return boolean;
 
-	procedure Put ( liste : in AdDoublet );
+	procedure Put_liste ( liste : in AdDoublet );
 
-	procedure insertion_trie ( l: in out AdDoublet ; element : in out AdDoublet) ;		
-
-
-	procedure tri_insertion ( lat : in out AdDoublet ) ;
-
+	procedure tri_paquet ( l : in out AdDoublet; NbCoord : in integer); 
 
 end listeDeDoublet;

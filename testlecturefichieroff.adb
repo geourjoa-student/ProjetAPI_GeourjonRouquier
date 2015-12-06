@@ -6,7 +6,6 @@ with Ada.Text_Io;
 procedure testlecturefichieroff is
 	maListeDeTest : AdDoublet;
 	nomFichier : String := "test.off";
-	courant : AdDoublet;
 	i : integer;
 begin
 	maListeDeTest:= null;
@@ -16,14 +15,7 @@ begin
 	
 	courant:=maListeDeTest;
 
-	while not (est_vide (courant)) loop
-		Ada.Text_Io.Put("Element n°" & Integer'Image (i));
-		Put(courant);
-		courant := courant.suc;
-		Ada.Text_Io.new_line;
-		i:=i+1;
-		
-	end loop;
+	Put_liste ( maListeDeTest );
 	
 end testlecturefichieroff;
 
