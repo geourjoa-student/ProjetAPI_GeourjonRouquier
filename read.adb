@@ -8,10 +8,9 @@ package body read is
 	-- Tableau qui contiendra les coordonnees
 	type T_tab_sommet is array (integer range <>) of T_Coord;
 
-	procedure lectureFichier ( liste : in out AdDoublet ; nomFichier : in String  ) is 
+	procedure lectureFichier ( liste : in out AdDoublet ; nomFichier : in String ; NbCoord : out integer ) is 
 
 		InputFile : Ada.Text_IO.File_Type;
-		NbCoord : integer;
 		NbTriangle : integer;
 		NbArrete : integer;
 		NbSommetPolygone : integer;

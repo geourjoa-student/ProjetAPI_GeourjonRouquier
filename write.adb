@@ -1,38 +1,39 @@
 with Ada.Text_Io;
 with Ada.Float_Text_Io;
-
-
+with listeDeDoublet; use listeDeDoublet;
 
 package body write is
 
 	procedure ecrire_fichier ( l : in AdDoublet ; nomFichier : in string  ) is
-		OutputFile : Ada.Text_Io.File;
+		OutputFile : Ada.Text_Io.File_type;
 		courant : AdDoublet;
 	begin
-		Ada.Text_Io.Create (Out_File, Ada.Text_Io.Out_File, nomFichier );
+		Ada.Text_Io.Create (OutputFile, Ada.Text_Io.Out_File, nomFichier );
 		Ada.Text_Io.Put_line (OutputFile, "%!PS");
 
-		courant := AdDoublet;
+		courant := l ;
 
 		while courant /= null loop 
-			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_1.x);
-			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_1.y);
-			Ada.Text_Io.put_line("moveto");
-			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_2.x);
-			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_2.y);
-			Ada.Text_Io.put_line("lineto");
-			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_3.x);
-			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_3.y);
-			Ada.Text_Io.put_line("lineto");
-			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_1.x);
-			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_1.y);
-			Ada.Text_Io.put_line("lineto");
-			Ada.Text_Io.Put_line("gsave");
-			Ada.Text_Io.Put_line("1 setgray");
-			Ada.Text_Io.Put_line("fill");
-			Ada.Text_Io.Put_line("grestore");
-			Ada.Text_Io.Put_line("0 setgray");
-			Ada.Text_Io.Put_line("stroke");
+			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_1.x, exp=>0);
+			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_1.y, exp=>0);
+			Ada.Text_Io.put_line(OutputFile, "moveto");
+			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_2.x, exp=>0);
+			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_2.y, exp=>0);
+			Ada.Text_Io.put_line(OutputFile, "lineto");
+			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_3.x,exp=>0);
+			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_3.y,exp=>0);
+			Ada.Text_Io.put_line(OutputFile, "lineto");
+			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_1.x, exp=>0);
+			Ada.Float_Text_Io.put(OutputFile, courant.triangle.Coord_1.y, exp=>0);
+			Ada.Text_Io.put_line(OutputFile, "lineto");
+			Ada.Text_Io.Put_line(OutputFile, "gsave");
+			Ada.Text_Io.Put_line(OutputFile, Integer'Image(1) & "setgray");
+			Ada.Text_Io.Put_line(OutputFile, "fill");
+			Ada.Text_Io.Put_line(OutputFile, "grestore");
+			Ada.Text_Io.Put_line(OutputFile, Integer'Image(0) & "setgray");
+			Ada.Text_Io.Put_line(OutputFile, "stroke");
+
+			courant:= courant.suc;
 			
 			
 		end loop;

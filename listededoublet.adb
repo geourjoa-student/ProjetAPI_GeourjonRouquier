@@ -1,5 +1,6 @@
 with Ada.Text_io;
 with Ada.Float_text_io;
+with Ada.Unchecked_Deallocation;
 
 package body listeDeDoublet is
 
@@ -71,7 +72,24 @@ package body listeDeDoublet is
 
 	end ajouter_en_tete_de_liste;
 
-	procedure free ( l : AdDoublet ) is new Ada.Unchecked_Deallocation ( l, AdDoublet);
+	procedure free is new Ada.Unchecked_Deallocation ( Doublet, AdDoublet);
+	
+	
+	procedure liberer_liste ( l : in out AdDoublet) is
+		courant : AdDoublet;
+	begin
+		while l /= null loop
+			courant:=l;
+			l:=l.suc;
+			free(courant);
+		end loop;
+
+	end liberer_liste;
+
+
+
+
+
 
 
 	function est_vide ( liste : in AdDoublet ) return boolean is
