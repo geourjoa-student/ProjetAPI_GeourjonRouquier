@@ -9,8 +9,6 @@ procedure testtripaquet is
 	s1,s2,s3,s4,s5 : T_Coord;
 	t1,t2,t3,t4,t5,t6 : T_Triangle;
 	d1, d2, d3, d4, d5, d6 : AdDoublet;
-
-	courant : AdDoublet;
 	i : integer :=0;
 begin
 	maListeDeTest := null;

@@ -78,79 +78,6 @@ package body listeDeDoublet is
 	end est_vide;
 
 
-	procedure insertion_trie ( l: in out AdDoublet ; element : in out AdDoublet) is
-		prec : AdDoublet;
-		courant : AdDoublet;
-	begin
-		Ada.Text_io.Put_line("Insertion triee :");
-		if est_vide (l) then
-			Ada.Text_io.Put_line("Insertion dans une liste vide");
-			l:=element;
-			element.suc := null;
-		else
-			Ada.Text_io.Put_line("Insertion dans une liste non vide");
-
-			prec := l;
-			courant:= l;
-
-			if (courant /= null) then
-				Ada.Text_io.put_line("Courant /= null");
-				if ( cle(courant.triangle)) < (cle(element.triangle)) then
-					Ada.Text_io.put(Float'image(cle(courant.triangle)) &  "<" & Float'image(cle(element.triangle)) );
-				else
-					Ada.Text_io.Put_line(Float'image(cle(courant.triangle)) &  ">" & Float'image(cle(element.triangle)) );
-				end if;
-			else
-
-				Ada.Text_io.Put_line("Courant = null");
-			end if;
-
-
-
-			while (courant /= null)  and then ( cle(courant.triangle)) < (cle(element.triangle)) loop
-				Ada.Text_io.put_line("Je rentre dans la boucle");
-				prec := courant;
-				courant := courant.suc;
-			end loop;
-
-			Ada.Text_io.put_line("Je suis sortie de la boucle");
-
-			if (courant = null ) then 
-
-				prec.suc:=element;
-				element.suc:= null; 
-			else
-				element.suc:=prec.suc;
-				prec.suc:=element;
-
-			end if;
-		end if;
-
-		Ada.Text_io.new_line;
-
-
-	end insertion_trie;
-
-	procedure tri_insertion ( lat : in out AdDoublet ) is
-		courant : AdDoublet;
-		lt : AdDoublet;
-		element : AdDoublet;
-	begin
-		courant := lat;
-		lt := null;
-
-		while not est_vide ( courant ) loop
-			element := courant;
-			courant := courant.suc;
-			insertion_trie(lt, element);
-		end loop;
-
-		lat := lt;
-
-	end tri_insertion;
-
-
-
 	type T_tab_liste is array (integer range <>) of AdDoublet;
 
 	-- La liste ne doit pas être vide
@@ -186,19 +113,19 @@ package body listeDeDoublet is
 		if l1 = null then
 			return l2;
 		end if;
-		
+
 		if l2 = null then
 			return l1;
 		end if;
-		
+
 		courant := l1;
-		
+
 		while courant.suc /= null loop
 			courant := courant.suc;
 		end loop;
-	
+
 		courant.suc:=l2;
-		
+
 		return l1;
 
 	end concat;
@@ -226,9 +153,9 @@ package body listeDeDoublet is
 				k : integer; --hash d'un triangle -> indice de l position dans le tableau 
 			begin
 				info_liste (l, a, b);
-				
+
 				Ada.Text_io.put_line("a: " & Float'Image(a) & ", b:" & Float'Image(b));
-				
+
 				for i in 0..NbCoord loop
 					tab(i):=null;
 				end loop;
