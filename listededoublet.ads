@@ -36,6 +36,8 @@ package listeDeDoublet is
 
 	procedure ajouter_en_tete_de_liste ( liste : in out AdDoublet ; valeur : in T_Triangle ) ;
 
+	procedure free ( l : in AdDoublet);
+
 	function est_vide ( liste : in AdDoublet ) return boolean;
 
 	procedure Put_liste ( liste : in AdDoublet );

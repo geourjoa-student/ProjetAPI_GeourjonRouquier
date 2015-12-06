@@ -71,6 +71,8 @@ package body listeDeDoublet is
 
 	end ajouter_en_tete_de_liste;
 
+	procedure free ( l : AdDoublet ) is new Ada.Unchecked_Deallocation ( l, AdDoublet);
+
 
 	function est_vide ( liste : in AdDoublet ) return boolean is
 	begin
