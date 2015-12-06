@@ -174,8 +174,6 @@ package body listeDeDoublet is
 			begin
 				info_liste (l, a, b);
 
-				Ada.Text_io.put_line("a: " & Float'Image(a) & ", b:" & Float'Image(b));
-
 				for i in 0..NbCoord loop
 					tab(i):=null;
 				end loop;
@@ -186,7 +184,6 @@ package body listeDeDoublet is
 					element:=courant;
 					courant:=courant.suc;
 					k:=hash(Float(NbCoord), a, b, cle(element.triangle));
-					Ada.Text_io.put(Integer'Image(k));	
 					ajout_en_tete(tab(k), element); 
 				end loop;
 
