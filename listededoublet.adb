@@ -37,16 +37,9 @@ package body listeDeDoublet is
 	end maxcZ;
 
 
-
-
-
-
-
-
 	function creer_coord ( x : in float; y : in float; z : in float ) return  T_Coord  is
-		coord : T_Coord; 		-- PAs sur de la façon dont il faut déclarer (idem pour créer triangle)
+		coord : T_Coord; 			
 	begin
-
 		coord.X:=x;
 		coord.Y:=y;
 		coord.Z:=z;
@@ -87,11 +80,6 @@ package body listeDeDoublet is
 	end liberer_liste;
 
 
-
-
-
-
-
 	function est_vide ( liste : in AdDoublet ) return boolean is
 	begin
 		return (liste = null);
@@ -124,7 +112,6 @@ package body listeDeDoublet is
 	begin
 		return  Integer ( n * (c-a)/(b-a));
 	end hash;
-
 
 
 	function concat ( l1 : in out AdDoublet; l2 : in out AdDoublet) return AdDoublet is
@@ -196,12 +183,6 @@ package body listeDeDoublet is
 		end if;
 
 	end tri_paquet;
-
-
-
-
-
-
 
 
 	-- Fonctions d'affichage dans la console
