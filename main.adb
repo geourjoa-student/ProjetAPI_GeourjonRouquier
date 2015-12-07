@@ -7,13 +7,9 @@ procedure main is
 	maListe : AdDoublet;
 	nbCoord : integer;
 begin
-	Ada.Text_Io.Put_line ( " Test dessin vache ");
 	lectureFichier( maListe, "cow.off", nbCoord);
 	tri_paquet( maListe, nbCoord);
-	ecrire_fichier(maListe, "cow.ps");
+	ecrire_fichier(maListe, "sortie.ps", 400.0);
 	liberer_liste(maListe);
-	Ada.Text_Io.Put_line("Fin programme.");
-
-
 	
 end main;
