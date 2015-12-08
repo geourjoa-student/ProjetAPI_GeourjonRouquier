@@ -32,7 +32,7 @@ package body read is
 			tab : T_tab_sommet (0..NbCoord-1);
 			N : integer; -- numéro de la coordonée lu
 
-			listeDeCoordonneesLue : L_Coord;
+			listeDeCoordonneesLue : Ad_L_Coord;
 
 
 		begin

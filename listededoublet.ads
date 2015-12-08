@@ -27,19 +27,19 @@ package listeDeDoublet is
 
 	-- Liste de polygone
 	type L_Polygone is record
-		Coord : L_Coord;
+		Coord : Ad_L_Coord;
 		Suc : Ad_L_Polygone;
 	end record;
 
 	--Définitions liées à la manipulation des triangles et coordonnées
 	
-	function cle ( liste : in L_Coord ) return float;
+	function cle ( liste : in Ad_L_Coord ) return float;
 
 	function creer_coord ( x : in float; y : in float; z : in float )  return T_Coord; 
 
 	-- Définitions liées au liste
 
-	procedure ajouter_polygone_en_tete( liste : in out Ad_L_Polygone ; valeur : in L_Coord ) 
+	procedure ajouter_polygone_en_tete( liste : in out Ad_L_Polygone ; valeur : in Ad_L_Coord ) ;
 
 	procedure ajouter_coord_en_tete( liste : in out Ad_L_Coord ; valeur : in T_Coord );
 
