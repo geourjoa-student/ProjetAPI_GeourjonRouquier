@@ -1,47 +1,54 @@
 package listeDeDoublet is
 
-	-- Définitions liées au doublet
+	-- Définitions liées à la répresentation des données
 
+	--Coordonnée d'un point dans un repère x,y,z
 	type T_Coord is record
 		X : float;
 		Y : float;
 		Z : float;
 	end record;
 
-	type T_Triangle is record
-		Coord_1 : T_Coord;
-		Coord_2 : T_Coord;
-		Coord_3 : T_Coord;
+	type L_Coord;
+
+	-- Pointeur vers une liste de coordonnées
+	type Ad_L_Coord is access L_Coord ;
+
+	-- Liste de coordonnées
+	type L_Coord is record
+		Coord : T_Coord; 
+		Suc : Ad_L_Coord ;
 	end record;
 
-	type Doublet;
+	type L_Polygone;
 
-	type AdDoublet is access Doublet ;
+	-- Pointeur sur une liste de polygone
+	type Ad_L_Polygone is access L_Polygone;
 
-	type Doublet is record
-		Triangle : T_Triangle ; 
-		Suc : AdDoublet ; -- pointeur sur un autre Doublet
+	-- Liste de polygone
+	type L_Polygone is record
+		Coord : L_Coord;
+		Suc : Ad_L_Polygone;
 	end record;
 
 	--Définitions liées à la manipulation des triangles et coordonnées
 	
-
-	function cle ( triangle : in T_Triangle ) return float;
+	function cle ( liste : in L_Coord ) return float;
 
 	function creer_coord ( x : in float; y : in float; z : in float )  return T_Coord; 
 
-	function creer_triangle  ( s1  : in T_Coord; s2 : in T_Coord; s3 : in T_Coord ) return T_Triangle ;
-
 	-- Définitions liées au liste
 
-	procedure ajouter_en_tete_de_liste ( liste : in out AdDoublet ; valeur : in T_Triangle ) ;
+	procedure ajouter_polygone_en_tete( liste : in out Ad_L_Polygone ; valeur : in L_Coord ) 
 
-	procedure liberer_liste ( l : in out AdDoublet);
+	procedure ajouter_coord_en_tete( liste : in out Ad_L_Coord ; valeur : in T_Coord );
 
-	function est_vide ( liste : in AdDoublet ) return boolean;
+	procedure liberer_liste_polygone ( l : in out Ad_L_Polygone);
 
-	procedure Put_liste ( liste : in AdDoublet );
+	function est_vide ( liste : in Ad_L_Polygone) return boolean;
 
-	procedure tri_paquet ( l : in out AdDoublet; NbCoord : in integer); 
+	procedure Put ( liste : in Ad_L_Polygone );
+
+	procedure tri_paquet ( l : in out Ad_L_Polygone; NbCoord : in integer); 
 
 end listeDeDoublet;

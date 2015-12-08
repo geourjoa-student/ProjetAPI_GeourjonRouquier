@@ -4,7 +4,7 @@ with read; use read;
 with write; use write;
 
 procedure main is
-	maListe : AdDoublet;
+	maListe : Ad_L_Polygone;
 	nbCoord : integer;
 begin
 	lectureFichier( maListe, "cow.off", nbCoord);

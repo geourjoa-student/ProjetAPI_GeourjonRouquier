@@ -4,10 +4,11 @@ with listeDeDoublet; use listeDeDoublet;
 
 package body write is
 
-	procedure ecrire_fichier ( l : in AdDoublet ; nomFichier : in string  ; coeffMultiplicateur : in float) is
+	procedure ecrire_fichier ( l : in Ad_L_Polygone; nomFichier : in string  ; coeffMultiplicateur : in float) is
 		OutputFile : Ada.Text_Io.File_type;
-		courant : AdDoublet;
-		x1,x2,x3,y1,y2,y3 : float;
+		courant : Ad_L_Polygone;
+		premiere_coord, coord_courante : Ad_L_Coord;
+		x1,x,y1,y : float;
 	begin
 		Ada.Text_Io.Create (OutputFile, Ada.Text_Io.Out_File, nomFichier );
 		Ada.Text_Io.Put_line (OutputFile, "%!PS");
@@ -15,28 +16,32 @@ package body write is
 		courant := l ;
 
 		while courant /= null loop 
-			x1:=(590.0/2.0)+coeffMultiplicateur*courant.triangle.Coord_1.x;
-			x2:=(590.0/2.0)+coeffMultiplicateur*courant.triangle.Coord_2.x;
-			x3:=(590.0/2.0)+coeffMultiplicateur*courant.triangle.Coord_3.x;
-			y1:=(840.0/2.0)+coeffMultiplicateur*courant.triangle.Coord_1.y;
-			y2:=(840.0/2.0)+coeffMultiplicateur*courant.triangle.Coord_2.y;
-			y3:=(840.0/2.0)+coeffMultiplicateur*courant.triangle.Coord_3.y;
+			premiere_coord:= courant.Coord;
+			coord_courante:=premiere_coord.suc;
 
-
+			
+			x1:=(590.0/2.0)+coeffMultiplicateur*premiere_coord.Coord.x;
+			y1:=(840.0/2.0)+coeffMultiplicateur*premiere_coord.Coord.y;
+			
 			Ada.Float_Text_Io.put(OutputFile, x1, exp=>0);
 			Ada.Text_Io.Put(OutputFile, " ");
 			Ada.Float_Text_Io.put(OutputFile, y1, exp=>0);
 			Ada.Text_Io.put_line(OutputFile, " moveto");
+
+
+			while coord_courante /= null loop
+				x:=(590.0/2.0)+coeffMultiplicateur*coord_courante.Coord.x;
+				y:=(840.0/2.0)+coeffMultiplicateur*coord_courante.Coord.y;
 			
-			Ada.Float_Text_Io.put(OutputFile, x2, exp=>0);
-			Ada.Text_Io.Put(OutputFile, " ");
-			Ada.Float_Text_Io.put(OutputFile, y2, exp=>0);
-			Ada.Text_Io.put_line(OutputFile, " lineto");
-			
-			Ada.Float_Text_Io.put(OutputFile, x3,exp=>0);
-			Ada.Text_Io.Put(OutputFile , " ");
-			Ada.Float_Text_Io.put(OutputFile, y3,exp=>0);
-			Ada.Text_Io.put_line(OutputFile, " lineto");
+				Ada.Float_Text_Io.put(OutputFile, x, exp=>0);
+				Ada.Text_Io.Put(OutputFile, " ");
+				Ada.Float_Text_Io.put(OutputFile, y, exp=>0);
+				Ada.Text_Io.put_line(OutputFile, " lineto");
+
+				coord_courante:=coord_courante.suc;
+
+			end loop;
+
 			
 			Ada.Float_Text_Io.put(OutputFile, x1, exp=>0);
 			Ada.Text_Io.Put(OutputFile, " ");

@@ -4,7 +4,14 @@ with Ada.Unchecked_Deallocation;
 
 package body listeDeDoublet is
 
-	-- Définitions liées au triangle
+	-- Définitions liées aux coordonnées et liste de coordonnées
+
+
+	function cle ( liste : in L_Coord ) return float is	
+	begin
+		return mincZ(liste);
+	end cle;
+
 
 	function minFloat ( a : in float ; b : in float ) return float is
 	begin
@@ -14,12 +21,6 @@ package body listeDeDoublet is
 			return b;
 		end if;
 	end minFloat;
-
-
-	function cle ( triangle : in T_Triangle ) return float is	
-	begin
-		return minFloat(triangle.Coord_1.Z , minFloat ( triangle.Coord_2.Z, triangle.Coord_3.Z));
-	end cle;
 
 	function maxFloat ( a : in float ; b : in float ) return float is
 	begin
@@ -31,11 +32,33 @@ package body listeDeDoublet is
 	end maxFloat;
 
 
-	function maxcZ ( triangle : in T_Triangle ) return float is	
+	-- La fonction ne protège pas quand liste est vide
+	function mincZ ( liste : in L_Coord ) return float is	
+		min : integer;
 	begin
-		return maxFloat(triangle.Coord_1.Z , maxFloat ( triangle.Coord_2.Z, triangle.Coord_3.Z));
-	end maxcZ;
+		min := liste.Coord.z;
+		
+		while liste /= null loop
+			min:=minFloat(min,liste.Coord.z);
+		end loop;
 
+		return min;
+		
+	end mincZ;
+
+	function maxcZ ( triangle : in T_Triangle ) return float is	
+		max : integer;
+	begin
+		max := liste.Coord.z;
+		
+		while liste /= null loop
+			max:=maxFloat(max,liste.Coord.z);
+		end loop;
+
+		return max;
+
+	
+	end maxcZ;
 
 	function creer_coord ( x : in float; y : in float; z : in float ) return  T_Coord  is
 		coord : T_Coord; 			
@@ -47,61 +70,71 @@ package body listeDeDoublet is
 		return coord;
 	end creer_coord;
 
-	function creer_triangle ( s1  : in T_Coord ; s2 : in T_Coord; s3 : in T_Coord ) return T_Triangle  is
-		triangle : T_Triangle;
-	begin
-		triangle.Coord_1:=s1;
-		triangle.Coord_2:=s2;
-		triangle.Coord_3:=s3;
-
-		return triangle;
-	end creer_triangle;
-
 	-- Définitions liées au liste
 
-	procedure ajouter_en_tete_de_liste ( liste : in out AdDoublet ; valeur : in T_Triangle ) is
+	
+	-- TODO Y a t'il possibililité de faire une surcharge de fonction
+	procedure ajouter_polygone_en_tete( liste : in out Ad_L_Polygone ; valeur : in L_Coord ) is
 	begin
-		liste := new Doublet' ( valeur, liste);	
+		liste := new L_Polygone' ( valeur, liste);	
+	end ajouter_polygon_en_tete;
 
-	end ajouter_en_tete_de_liste;
+	procedure ajouter_coord_en_tete( liste : in out Ad_L_Coord ; valeur : in T_Coord ) is
+	begin
+		liste := new L_Coord' ( valeur, liste);	
+	end ajouter_polygon_en_tete;
 
-	procedure free is new Ada.Unchecked_Deallocation ( Doublet, AdDoublet);
+
+	--Procédure lié à la désallocation de la mémoire du programme	
+	procedure free_polygone is new Ada.Unchecked_Deallocation ( L_Polygone, Ad_L_Polygone);
 	
-	
-	procedure liberer_liste ( l : in out AdDoublet) is
-		courant : AdDoublet;
+	procedure free_coord is new Ada.Unchecked_Deallocation ( L_Coord, Ad_L_Coord);
+
+	procedure liberer_liste_coord ( l : in out Ad_L_Coord ) is
+		courant : Ad_L_Coord;
+	begin
+		while l /= null loop
+			courant := l;
+			l:=l.Suc;
+			free_coord(courant);
+		end loop;
+	end liberer_liste_coord;
+
+	procedure liberer_liste_polygone ( l : in out Ad_L_Polygone) is
+		courant : Ad_L_Polygone;
 	begin
 		while l /= null loop
 			courant:=l;
 			l:=l.suc;
-			free(courant);
+			liberer_liste_coord(courant.Coord);
+			free_polygone(courant);
 		end loop;
 
 	end liberer_liste;
 
 
-	function est_vide ( liste : in AdDoublet ) return boolean is
+	function est_vide ( liste : in Ad_L_Polygone ) return boolean is
 	begin
 		return (liste = null);
 	end est_vide;
 
-
-	type T_tab_liste is array (integer range <>) of AdDoublet;
+	-- tableau lié au tri par paquet	
+	type T_tab_liste is array (integer range <>) of Ad_L_Polygone;
 
 	-- La liste ne doit pas être vide
-	procedure info_liste ( l: in AdDoublet ; minZ : out float; maxZ : out float) is
-		courant : AdDoublet;	
+	procedure info_liste ( l: in Ad_L_Polygone ; minZ : out float; maxZ : out float) is
+		courant : Ad_L_Polygone;	
 	begin
 		courant := l;
-		minZ:=cle(courant.triangle);
-		maxZ:=maxcZ(courant.triangle);
+		minZ:=cle(courant.Coord);
+		maxZ:=maxcZ(courant.Coord);
 		courant:=courant.suc;
 		while courant /= null loop
-			if minZ > cle(courant.triangle) then
-				minZ := cle(courant.triangle);
+			if minZ > cle(courant.Coord) then
+				minZ := cle(courant.Coord);
 			end if;
-			if maxZ < maxcZ(courant.triangle) then
-				maxZ := maxcZ (courant.triangle);
+			if maxZ < maxcZ(courant.Coord) then
+				maxZ := maxcZ (courant.Coord);
 			end if;
 			courant:=courant.suc;
 		end loop;
@@ -113,9 +146,9 @@ package body listeDeDoublet is
 		return  Integer ( n * (c-a)/(b-a));
 	end hash;
 
-
-	function concat ( l1 : in out AdDoublet; l2 : in out AdDoublet) return AdDoublet is
-		courant : AdDoublet;
+	-- Résultat dans l1
+	procedure concat ( l1 : in out Ad_L_Polygone; l2 : in out Ad_L_Polygone) is
+		courant : Ad_L_Polygone;
 	begin
 		if l1 = null then
 			return l2;
@@ -133,29 +166,14 @@ package body listeDeDoublet is
 
 		courant.suc:=l2;
 
-		return l1;
-
 	end concat;
 
-	procedure ajout_en_tete ( l : in out AdDoublet ; e : in AdDoublet ) is
-	begin
-		if l = null then
-			l:=e;
-			e.suc:=null;
-		else
-			e.suc:=l;
-			l:=e;
-		end if;
-	end ajout_en_tete;
-
-
-
-	procedure tri_paquet ( l : in out AdDoublet ; NbCoord : in integer) is
+	procedure tri_paquet ( l : in out Ad_L_Polygone ; NbCoord : in integer) is
 	begin
 		if l /= null then
 			declare
 				tab : T_tab_liste (0..NbCoord);
-				courant, element : AdDoublet;
+				courant, element : Ad_L_Polygone;
 				a,b : float;
 				k : integer; --hash d'un triangle -> indice de l position dans le tableau 
 			begin
@@ -170,14 +188,14 @@ package body listeDeDoublet is
 				while (courant /= null ) loop
 					element:=courant;
 					courant:=courant.suc;
-					k:=hash(Float(NbCoord), a, b, cle(element.triangle));
-					ajout_en_tete(tab(k), element); 
+					k:=hash(Float(NbCoord), a, b, cle(element.Coord));
+					concat (tab(k), element); 
 				end loop;
 
 				l:=null;
 
 				for i in 0..NbCoord loop
-					l:=concat(l, tab(i));
+					concat(l, tab(i));
 				end loop;
 			end;
 		end if;
@@ -199,43 +217,45 @@ package body listeDeDoublet is
 	end Put_coord;
 
 
-	procedure Put_triangle ( triangle : in T_Triangle )is
+	procedure Put_L_Coord( liste : in L_Coord )is
+		courant : L_Coord;
+		i : integer := 1
 	begin
-		Ada.Text_io.Put("S1 : ");
-		Put_coord(triangle.Coord_1);
-		Ada.Text_io.Put(", S2 : ");
-		Put_coord(triangle.Coord_2);
-		Ada.Text_io.Put(", S3 : ");
-		Put_coord(triangle.Coord_3);
+		courant := liste;
+		while courant /= null loop
+		 	Ada.Text_io.Put("S" & Integer'Image(i) & ": ");
+			Put_coord(courant.Coord);
+			couant:=courant.suc;
+		end loop;
 		Ada.Text_io.Put(".");
-	end Put_triangle;
+	end Put_L_Coord;
 
 
-	procedure Put ( liste : in AdDoublet ) is
+	procedure Put_L_Polygone ( liste : in Ad_L_Polygone) is
 	begin
-		Ada.Text_io.Put_line("Ce doublet représente le triangle: ");
-		Put_triangle(liste.all.Triangle);
+		Ada.Text_io.Put_line("Ce polygone possède les coordonnées : ");
+		Put_L_Coord(liste.Coord);
 		Ada.Text_io.new_line;
-		Ada.Text_io.Put("la clé de ce doublet est : " & Float'Image (cle (liste.triangle)));
+		Ada.Text_io.Put("La clé de ce polygone est : " & Float'Image (cle (liste.Coord)));
 		Ada.Text_io.new_line;
-	end Put;
+	end Put_L_Polygone;
 
-	procedure Put_liste (liste : in AdDoublet ) is
-		courant  : AdDoublet;
+	procedure Put (liste : in Ad_L_Polygone) is
+		courant  : Ad_L_Polygone;
 		i : integer :=0;
 	begin
 
 		courant:=liste;
 
-		while not (est_vide (courant)) loop
+		while courant /= null  loop
 			Ada.Text_Io.Put_line("Element n°" & Integer'Image (i) & ":");
-			Put(courant);
+			Put_L_Polygone(courant);
 			courant := courant.suc;
 			Ada.Text_Io.new_line;
 			i:=i+1;
 
 		end loop;
 
-	end Put_liste;
+	end Put;
 
 end listeDeDoublet;

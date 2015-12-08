@@ -8,10 +8,10 @@ package body read is
 	-- Tableau qui contiendra les coordonnees
 	type T_tab_sommet is array (integer range <>) of T_Coord;
 
-	procedure lectureFichier ( liste : in out AdDoublet ; nomFichier : in String ; NbCoord : out integer ) is 
+	procedure lectureFichier ( liste : in out Ad_L_Polygone; nomFichier : in String ; NbCoord : out integer ) is 
 
 		InputFile : Ada.Text_IO.File_Type;
-		NbTriangle : integer;
+		NbPolygone: integer;
 		NbArrete : integer;
 		NbSommetPolygone : integer;
 
@@ -24,17 +24,15 @@ package body read is
 
 		-- On lit la deuxième ligne : NSommet, NFace, NArete
 		Ada.Integer_text_io.get(InputFile, NbCoord);
-		Ada.Integer_text_io.get(InputFile, NbTriangle);
+		Ada.Integer_text_io.get(InputFile, NbPolygone);
 		Ada.Integer_text_io.get(InputFile, NbArrete);
 
 
 		declare 
 			tab : T_tab_sommet (0..NbCoord-1);
-			N1 :  Integer;
-			N2 :  Integer;
-			N3 :  Integer;
+			N : integer; -- numéro de la coordonée lu
 
-			triangleLu : T_Triangle;
+			listeDeCoordonneesLue : L_Coord;
 
 
 		begin
@@ -48,21 +46,24 @@ package body read is
 			end loop;
 
 
-			-- Lire les triangles et le tableau de sommet pour en deduire une liste de doublet
+			-- Lire les polygones et le tableau de sommet pour en deduire une liste de doublet
 
-			for i in 1..NbTriangle loop
+			for i in 1..NbPolygone loop
+				
+				-- Lire le nombre de sommet
 				Ada.Integer_text_io.get(InputFile, NbSommetPolygone); --On ne s'en sert pas ici
-				Ada.Integer_text_io.get(InputFile, N1);
-				Ada.Integer_text_io.get(InputFile, N2);
-				Ada.Integer_text_io.get(InputFile, N3);
+				
+				listeDeCoordonneesLue := null;
+				
+				-- Lire les sommets et les mettres dans une liste
+				for i in 1..NbSommetPolygone loop			
+					Ada.Integer_text_io.get(InputFile, N);
+					ajouter_coord_en_tete ( listeDeCoordonneesLue, tab(N));
+				end loop;
 
-				triangleLu := creer_triangle (tab(N1), tab(N2), tab(N3));
-
-				ajouter_en_tete_de_liste ( liste, triangleLu );
-
+				ajouter_polygone_en_tete ( liste, listeDeCoordonneesLue);
 
 			end loop;
-
 
 		end;
 
