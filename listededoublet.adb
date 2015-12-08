@@ -242,32 +242,19 @@ package body listeDeDoublet is
 	procedure tri_paquet ( l : in out Ad_L_Polygone ; NbCoord : in integer) is
 	begin
 		if l /= null then
-			Ada.Text_Io.Put_line("Début tri");
-
-
 			declare
 				tab : T_tab_liste (0..NbCoord);
 				courant, element : Ad_L_Polygone;
 				a,b : float;
 				k : integer; --hash d'un triangle -> indice de l position dans le tableau 
 			begin
-				
-				Ada.Text_Io.Put_line("Obtention des infos");
-			
 				info_liste (l, a, b);
-
-
-				Ada.Text_Io.Put_line("Initialisation liste");
+				
 				for i in 0..NbCoord loop
 					tab(i):=null;
 				end loop;
-
-			
-				Ada.Text_Io.Put_line("Remplisaege liste");
-
 				
 				courant :=l;
-				
 
 				while (courant /= null ) loop
 					element:=courant;
@@ -276,11 +263,7 @@ package body listeDeDoublet is
 					element.suc:=null;
 
 					concat (tab(k), element); 
-					Ada.Text_io.Put_line("Boucle infinie");
 				end loop;
-
-				Ada.Text_io.Put_line("Concaténation");
-
 
 				l:=null;
 
@@ -288,10 +271,7 @@ package body listeDeDoublet is
 					concat(l, tab(i));
 				end loop;
 
-				Ada.Text_io.Put_line("Debug 6");
-				
 			end;
-			Ada.Text_Io.Put_line("Fin tri");
 
 		end if;
 

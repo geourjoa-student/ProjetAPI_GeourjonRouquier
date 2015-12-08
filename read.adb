@@ -51,8 +51,7 @@ package body read is
 			for i in 1..NbPolygone loop
 				
 				-- Lire le nombre de sommet
-				Ada.Integer_text_io.get(InputFile, NbSommetPolygone); --On ne s'en sert pas ici
-				
+				Ada.Integer_text_io.get(InputFile, NbSommetPolygone); 				
 				listeDeCoordonneesLue := null;
 				
 				-- Lire les sommets et les mettres dans une liste
