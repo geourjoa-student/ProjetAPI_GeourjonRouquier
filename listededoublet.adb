@@ -62,12 +62,7 @@ package body listeDeDoublet is
 	end Put;
 
 	
-	
-	
-	
 	-- Définitions liées aux coordonnées et liste de coordonnées
-
-
 
 
 	function minFloat ( a : in float ; b : in float ) return float is
@@ -97,8 +92,6 @@ package body listeDeDoublet is
 		courant := liste;
 
 		min := courant.Coord.z;
-
-	--	Put_L_Coord(liste);
 
 		while  courant /= null loop
 			min:=minFloat(min,courant.Coord.z);
