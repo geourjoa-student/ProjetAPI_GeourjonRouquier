@@ -16,6 +16,8 @@ package body read is
 		NbSommetPolygone : integer;
 
 	begin
+		Ada.Text_IO.Put_line("Debut lecture");	
+		
 		--Ouverture du fichier
 		Ada.Text_IO.Open(File => InputFile, Mode => Ada.Text_IO.In_File, Name => nomFichier );
 		
@@ -36,14 +38,27 @@ package body read is
 
 
 		begin
+			Ada.Text_IO.Put_line("Debut lecture coordonnée");	
+
+			Ada.Text_IO.Put_line(Integer'Image (NbCoord ));
+			
+			
 			-- Lire et remplir notre tableau de sommet
 
 			for i in 0..NbCoord-1 loop
+				
+				Ada.Text_IO.Put_line("Debug 1");	
 				Ada.Float_text_io.get(InputFile, tab(i).X);
+				Ada.Text_IO.Put_line("Debug 2");	
 				Ada.Float_text_io.get(InputFile, tab(i).Y);
+				Ada.Text_IO.Put_line("Debug 3");	
 				Ada.Float_text_io.get(InputFile, tab(i).Z);
+				Ada.Text_IO.Put_line("Debug 4");	
+
 
 			end loop;
+		
+			Ada.Text_IO.Put_line("Debut lecture polygone");	
 
 
 			-- Lire les polygones et le tableau de sommet pour en deduire une liste de doublet

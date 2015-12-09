@@ -7,9 +7,13 @@ procedure main is
 	maListe : Ad_L_Polygone;
 	nbCoord : integer;
 begin
-	lectureFichier( maListe, "Models/space_station.off", nbCoord);
+	Ada.Text_Io.Put_line("Lecture");
+	lectureFichier( maListe, "Models/cow.off", nbCoord);
+	Ada.Text_Io.Put_line("Tri");
 	tri_paquet( maListe, nbCoord);
-	ecrire_fichier(maListe, "Sortie/sortie.ps", 1.0);
+	Ada.Text_Io.Put_line("Ecriture");
+	ecrire_fichier(maListe, "Sortie/sortie.ps", 200.0);
+	Ada.Text_Io.Put_line("Libération");
 	liberer_liste_polygone(maListe);
-
+	Ada.Text_Io.Put_line("Fin");
 end main;
