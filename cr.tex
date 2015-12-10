@@ -1,0 +1,121 @@
+%%% Template originaly created by Karol Kozioł (mail@karol-koziol.net) and modified for ShareLaTeX use
+
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\renewcommand\familydefault{\sfdefault}
+\usepackage{tgheros}
+\usepackage[defaultmono]{droidmono}
+
+\usepackage{amsmath,amssymb,amsthm,textcomp}
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage{tikz}
+
+\usepackage{geometry}
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,%
+bindingoffset=0mm, top=20mm,bottom=20mm}
+
+
+\linespread{1.3}
+
+\newcommand{\linia}{\rule{\linewidth}{0.5pt}}
+
+% custom theorems if needed
+\newtheoremstyle{mytheor}
+    {1ex}{1ex}{\normalfont}{0pt}{\scshape}{.}{1ex}
+    {{\thmname{#1 }}{\thmnumber{#2}}{\thmnote{ (#3)}}}
+
+\theoremstyle{mytheor}
+\newtheorem{defi}{Definition}
+
+% my own titles
+\makeatletter
+\renewcommand{\maketitle}{
+\begin{center}
+\vspace{2ex}
+{\huge \textsc{\@title}}
+\vspace{1ex}
+\\
+\linia\\
+\@author \hfill \@date
+\vspace{4ex}
+\end{center}
+}
+\makeatother
+%%%
+
+% custom footers and headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{CR Geourjon-Rouqier}
+\cfoot{}
+\rfoot{Page \thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+%
+
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
+\begin{document}
+
+\title{Projet API : Algorithme du peintre}
+
+\author{Anthony Geourjon - Clément Rouqier, Polytech Grenoble RICM3 Gr.2}
+
+\date{10/12/2015}
+
+\maketitle
+
+\section*{Liste des paquetages}
+
+Le code est subdivisisé en 3 paqutages plus le programme principales.
+\begin{itemize}
+  \item donnee : modélisations et traitements des données du programme
+  \item lecture : lecture de fichiers
+  \item ecriture : ecriture de fichier
+\end{itemize}
+Le programme principal \textit{peintre} se charge quand à lui de gérer les arguments de la commande et d'utiliser les paquetages cités plus haut.
+
+
+\section*{Installation}
+Pour télecharger le projet il y a deux méthodes. La première est de télécharger le zip du projet accessible depuis Github. La seconde est de cloner le projet. L'installation est simple, il suffit de décompresser l'archive et d'executer la commande \textit{make}.
+L'adresse de la page Github du projet est : \textit{https://github.com/geourjoa/ProjetAPI\_GeourjonRouquier}
+
+\section*{Utilisation}
+Pour utiliser le programme il suffit de se placer dans le dossier où se situe l'executable et d'utiliser la commande : 
+\textit{./peintre fich1 fich2} \\
+
+\begin{itemize}
+  \item \textit{fich1} : fichier qui sera convertie en fichier PostScript. Ce fichier doit avoir l'extension \textit{.off}
+  \item \textit{fich2} : fichier résultant de la conversion de \textit{fichier1}. Ce fichier doit avoir l'extentions \textit{.ps}
+\end{itemize}
+
+\section*{Tests}
+Un ensemble de fichiers image sont présent dans le dossiers \textit{Modeles/}.
+Nous avions ecrit plusieurs fichiers de test pour la version antérieurs du programme (fonctionnement initial avec seulement des triangles). En adaptant le code aux spécificités des polygones, les tests sont devenus obsolétes et nous ne les avons pas réécrit.
+
+\section*{Evaluation performance}
+
+Dans notre cas, l'uutilisation d'un tri à peu efficace du fait de la fonction de hachage peu représentative. En effet comme celle-ci renvoie la partie entière 
+
+\section*{Difficultés}
+Une des premières difficultés à été le choix des outils pour travailler. S'il était impensable de travailler sans Git/Github nous ne savions pas quel éditeur ou IDE utiliser pour développer le projet. Nous avons choisis d'utiliser Vim(Anthony) et Gedit(Clément). Nous maitrisons ces outils et nous sommes efficaces, cependant les solutions de déboggages étaient lourdes et peu intuitive (gdb ou ddd). Un outil comme Eclipse aurait été plus "convivial" dans ce genre de situations. 
+
+Certains fichiers ne sont pas utilisable car ils lèvent une ADA\_IO\_EXCEPTION.DATA\_ERROR. Ce bug est situé à la ligne 47 du fichier lecture.adb. Le problème provient de \textit{Ada.float\_text\_io.get}. Apparament celle-ci ne trouve pas les données dans le format qu'elles attend alors que pourtant le fichier contient bien des flottants. 
+
+Nous n'avons pas eu le temps de rendre générique certaines méthodes comme l'insertion. Nous aurions aussi pu amémliorer la compréhensibilité du code en surchargent certaines fonctions au lieu d'en créer de nouvelles (Put, par exemple).
+
+
+\end{document}
+
