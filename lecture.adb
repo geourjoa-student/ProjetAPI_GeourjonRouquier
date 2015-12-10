@@ -1,9 +1,8 @@
-with listeDeDoublet; use listeDeDoublet; 
-
+with donnee; use donnee; 
 with Ada.Integer_text_io;
 with Ada.Float_text_io;
 
-package body read is 
+package body lecture is 
 
 	-- Tableau qui contiendra les coordonnees
 	type T_tab_sommet is array (integer range <>) of T_Coord;
@@ -16,8 +15,6 @@ package body read is
 		NbSommetPolygone : integer;
 
 	begin
-		Ada.Text_IO.Put_line("Debut lecture");	
-		
 		--Ouverture du fichier
 		Ada.Text_IO.Open(File => InputFile, Mode => Ada.Text_IO.In_File, Name => nomFichier );
 		
@@ -38,22 +35,18 @@ package body read is
 
 
 		begin
-			Ada.Text_IO.Put_line("Debut lecture coordonnée");	
-
-			Ada.Text_IO.Put_line(Integer'Image (NbCoord ));
-			
 			
 			-- Lire et remplir notre tableau de sommet
 
 			for i in 0..NbCoord-1 loop
-				
-				Ada.Text_IO.Put_line("Debug 1");	
+				-- | BUG | --
+				-- Parfois cette ligne provoque une erreur ADA.IO_EXCEPTIONS.DATA_ERROR.
+				-- Cela semble lié à get qui lirait un nombre d'un type différent à celui attendue. 
+				-- Ce qui est étrange c'est que cela fonctionne parfaitement bien avec certain fichiers -> cow.off
+				--Une explication serait qu'il y est un caractère non imprimable dans certains fichiers mais pas dans d'autres
 				Ada.Float_text_io.get(InputFile, tab(i).X);
-				Ada.Text_IO.Put_line("Debug 2");	
 				Ada.Float_text_io.get(InputFile, tab(i).Y);
-				Ada.Text_IO.Put_line("Debug 3");	
 				Ada.Float_text_io.get(InputFile, tab(i).Z);
-				Ada.Text_IO.Put_line("Debug 4");	
 
 
 			end loop;
@@ -85,4 +78,4 @@ package body read is
 
 	end lectureFichier;
 
-end read;
+end lecture;

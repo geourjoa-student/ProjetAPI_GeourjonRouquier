@@ -1,8 +1,8 @@
-with listeDeDoublet; use listeDeDoublet;
+with donnee; use donnee;
 
 
-package write is
+package ecriture is
 
 	procedure ecrire_fichier ( l : in Ad_L_Polygone ; nomFichier : in string ; coeffMultiplicateur : in float);
 
-end write;
+end ecriture;

@@ -1,8 +1,8 @@
 with Ada.Text_Io;
 with Ada.Float_Text_Io;
-with listeDeDoublet; use listeDeDoublet;
+with donnee; use donnee;
 
-package body write is
+package body ecriture is
 
 	procedure ecrire_fichier ( l : in Ad_L_Polygone; nomFichier : in string  ; coeffMultiplicateur : in float) is
 		OutputFile : Ada.Text_Io.File_type;
@@ -73,4 +73,4 @@ package body write is
 
 	end ecrire_fichier;
 
-end write;
+end ecriture;

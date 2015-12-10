@@ -2,7 +2,7 @@ with Ada.Text_io;
 with Ada.Float_text_io;
 with Ada.Unchecked_Deallocation;
 
-package body listeDeDoublet is
+package body donnee is
 
 	
 	-- Fonctions d'affichage dans la console
@@ -272,4 +272,4 @@ package body listeDeDoublet is
 
 
 
-end listeDeDoublet;
+end donnee;

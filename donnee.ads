@@ -1,4 +1,4 @@
-package listeDeDoublet is
+package donnee is
 
 	-- Définitions liées à la répresentation des données
 
@@ -51,4 +51,4 @@ package listeDeDoublet is
 
 	procedure tri_paquet ( l : in out Ad_L_Polygone; NbCoord : in integer); 
 
-end listeDeDoublet;
+end donnee;
